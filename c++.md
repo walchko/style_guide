@@ -25,6 +25,7 @@ IndentPPDirectives: BeforeHash%
 
 ## Macros, Constants and `#defines`
 
+- User ALL CAPS for constants 
 - Don't use `#defines` if possible
 - Use `constexpr` so compiler can double check type
 
@@ -55,6 +56,30 @@ public:
 protected:
   int my_hidden_var; // state info user doesn't need access to
 };
+```
+
+## Structs
+
+```cpp
+struct Foo_t {
+  int bar;
+};
+```
+
+
+## Enums, Unions, and typedefs
+
+```cpp
+enum Foo_t: uint16_t {A, B, C};
+
+union {
+  struct {
+     uint8_t hi,lo;
+  };
+  uint16_t u16;
+} Memory_t;
+
+typedef std::vector<int> IntVec_t;
 ```
 
 ## Libraries
