@@ -86,6 +86,8 @@ typedef std::vector<int> IntVec_t;
 
 - Make header only libraries when possible, things compile really fast now a days
 - Have function and methods return important info
+- Stand-a-lone functions use snake case
+- Wrap libraries in a `namespace`
 
 ```cpp
 struct Status {
@@ -94,7 +96,7 @@ struct Status {
   uint8_t packets_found;
 };
 
-Status findPacketsInBuffer(const uint8_t *buffer) {
+Status find_packets(const uint8_t *buffer) { // snake case
   // ...
   return Status{true,0,3};
 }
