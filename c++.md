@@ -46,6 +46,24 @@ constexpr int VAR = 1; // all caps and compiler will double check type usage
 
 ## Namespaces
 
+- Never use something like `using namespace std;` in a header file! You can do that in a `*.cpp` implementation file
+- Some standard, STL, C++ `namespace`s are crazy nested, you can shorten them to be more readable
+
+```cpp
+namespace foo {
+    namespace bar {
+         namespace baz {
+             int qux = 42;
+         }
+    }
+}
+ 
+// shorten your namespace to make it more readable
+namespace fbz = foo::bar::baz;
+
+int a = fbz::qux;
+```
+
 ## Class
 
 ```cpp
@@ -76,9 +94,13 @@ struct Foo_t {
 
 ## `enum`, `union`, `using` and `typedef`
 
+- For new data types using `enums` and `unions` and sometimes `typedef` I put `_t` at the end of the name to know it is a custom type
+- If they are templated classes, I usually don't put `_t` at the end of the name
+
 ```cpp
 enum Foo_t: uint16_t {A, B, C};
 
+// setting/getting high/low bytes from ints
 union {
   struct {
      uint8_t hi,lo;
@@ -86,33 +108,39 @@ union {
   uint16_t u16;
 } Memory_t;
 
-typedef std::vector<int> IntVec_t;
+// 
+typedef std::vector<int> IntVec;
 template<typename T, uint16_t MAX_SIZE=64> using myDeque = myVector<T,MAX_SIZE>;
 ```
 
 ## Functions and Methods
 
 - Have function and methods return important and useful info
-  - Use `struct` instead of `tuple`
+  - Return simple `struct` instead of `tuple` for functions
+    - `tuple` syntax can be confusing and verbose, while `struct` is realatively simple to use
   - Try to keep simple data types in `struct` like `int`, `bool`, `float`, etc
 - Stand-a-lone functions use snake case
 - No more than 3 indents in a function or create a new function to handle the complexity
 - Return as soon as possible to reduce indentation
 
 ```c++
-struct Status {
+enum Error_t {GOOD, CRAP, HOLY_COW};
+
+struct Status_t {
   bool ok;
-  uint8_t err_no;
+  Error_t err_no;
   uint8_t packets_found;
 };
 
 Status find_packets(const uint8_t *buffer) { // snake case
+  if (buffer == nullptr) return Status_t{false,HOLY_COW,0};
   // ...
-  return Status{true,0,3};
+  return Status_t{true,GOOD,3};
 }
 
+// simple, but less clear on error solution
 bool find_packets2(const uint8_t *buffer) {
-  if (buffer == nullptr) return false; // return
+  if (buffer == nullptr) return false; // return early
   // ...
   return true;
 }
