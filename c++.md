@@ -29,7 +29,7 @@ IndentPPDirectives: BeforeHash%
 
 ## Macros, Constants and `#defines`
 
-- User ALL CAPS for constants 
+- Use ALL CAPS for constants 
 - Don't use `#defines` if possible
 - Use `constexpr` so compiler can double check type
 
