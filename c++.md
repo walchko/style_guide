@@ -55,6 +55,9 @@ public:
   ~Foo() {}
   void myFunction() {} // camel case
   
+  // inline functions only when 1 or maybe 2 lines of code
+  inline int oneliner() {} 
+  
   int my_var; // snake case
   
 protected:
@@ -71,7 +74,7 @@ struct Foo_t {
 ```
 
 
-## Enums, Unions, and typedefs
+## `enum`, `union`, `using` and `typedef`
 
 ```cpp
 enum Foo_t: uint16_t {A, B, C};
@@ -84,16 +87,19 @@ union {
 } Memory_t;
 
 typedef std::vector<int> IntVec_t;
+template<typename T, uint16_t MAX_SIZE=64> using myDeque = myVector<T,MAX_SIZE>;
 ```
 
-## Libraries
+## Functions and Methods
 
-- Make header only libraries when possible, things compile really fast now a days
-- Have function and methods return important info
+- Have function and methods return important and useful info
+  - Use `struct` instead of `tuple`
+  - Try to keep simple data types in `struct` like `int`, `bool`, `float`, etc
 - Stand-a-lone functions use snake case
-- Wrap libraries in a `namespace`
+- No more than 3 indents in a function or create a new function to handle the complexity
+- Return as soon as possible to reduce indentation
 
-```cpp
+```c++
 struct Status {
   bool ok;
   uint8_t err_no;
@@ -104,4 +110,65 @@ Status find_packets(const uint8_t *buffer) { // snake case
   // ...
   return Status{true,0,3};
 }
+
+bool find_packets2(const uint8_t *buffer) {
+  if (buffer == nullptr) return false; // return
+  // ...
+  return true;
+}
+
+// Too much indenting can be confusing on code. Try to 
+// limit it to 3 levels. If you need more, then break
+// part of your code out into another function.
+bool indents(int val) {
+  if (val == 0) {
+    return false; // 1 indent
+  }
+  
+  for (int i =1; i < 5; ++i) {
+    if (val == i) return true; // 2 indent
+    if (val/2 == i) {
+      if (i == 4) {
+        return true; // 3 indents
+      }
+    }
+  }
+  return true;
+}
+```
+
+## Libraries
+
+- Make header only libraries when possible, things compile really fast now a days
+- Wrap libraries in a `namespace`
+
+```cpp
+// my header.hpp
+#pragma once
+
+#if defined(__APPLE__)
+  // do something
+#elif defined(ARDUINO)
+  // do something
+  #if defined(ARDUINO_ITSYBITSY_M0)
+    // do something
+  #elif defined(ARDUINO_ITSYBITSY_M4)
+    // do something
+  #endif
+#elif defined(linux) || defined(UNIX)
+  // do something
+#else
+  // do something
+#endif
+
+namespace kevin {
+
+constexpr int COOL_VAR = 33;
+constexpr bool DO_NOW = false;
+
+class MyClass {};
+
+static bool myFunction() {} // have to make static
+
+} // end namespace
 ```
