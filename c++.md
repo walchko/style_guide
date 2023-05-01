@@ -1,3 +1,7 @@
+<a href="https://isocpp.org/" target="_blank"> 
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="C++" height="200"/> 
+</a>  
+  
 # C++ Style Guide
 
 ## `clang-format`
