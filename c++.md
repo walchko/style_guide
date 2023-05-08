@@ -30,8 +30,14 @@ IndentPPDirectives: BeforeHash%
 ## Macros, Constants and `#defines`
 
 - Use ALL CAPS for constants 
-- Don't use `#defines` if possible
+- Don't use `#define` for constants if possible
 - Use `constexpr` so compiler can double check type
+- Useful `#if defined()`:
+  - `ARDUINO_ITSYBITSY_M0`
+  - `ARDUINO_ITSYBITSY_M4`
+  - `ARDUINO_QTPY_M0`
+  - `ARDUINO_TRINKET_M0`
+  - More found in Adafruit's [github](https://github.com/adafruit/ArduinoCore-samd/blob/master/boards.txt)
 
 ```cpp
 #pragma once // simplier than if/endif
